@@ -55,18 +55,87 @@
     <button>Trigger a Global Error</button>
   </section>
 
+  
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-    let calculateBtn = document.querySelector('#calculate');
-    calculateBtn.addEventListener('click', () => {
+    window.TrackJS && TrackJS.install({ 
+    token: "3ca279a419d6406db7820aa5e7e6c9ad"
+    // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+    let calcBtn = document.querySelector('#calculate');
+    calcBtn.addEventListener('click', () => {
+
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {throw(err);}
+      finally{console.log('Done')}
     });
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-    // TODO - Make buttons functional
+    let errBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+    errBtns[0].addEventListener('click', () => {
+      let output = document.querySelector('output');
+      console.log('your output is:' + output.innerHTML);
+    });
+
+    errBtns[1].addEventListener('click', () => {
+      try {
+        alert(number);
+      } catch (err) {
+        throw err;
+      } finally {
+        alert ('Done');
+      }
+    });
+
+    errBtns[2].addEventListener('click', () => {
+      console.dir(document.location);
+    });
+
+    errBtns[3].addEventListener('click', () => {
+      console.dirxml(document.location);
+    });
+    errBtns[4].addEventListener('click', () => {
+      console.group('Logging Group');
+    });
+    errBtns[5].addEventListener('click', () => {
+      console.groupEnd('Logging Group');
+      console.log('Group Ending');
+    });
+    errBtns[6].addEventListener('click', () => {
+      console.table(errorBtns);
+    });
+    errBtns[7].addEventListener('click', () => {
+      console.time();
+    });
+    errBtns[8].addEventListener('click', () => {
+      console.timeEnd();
+    });
+    errorBtns[9].addEventListener('click', () => {
+      const method = () => {customMethodf();}
+      const customMethodf = () => {console.trace();};
+      method();
+    });
+
+    errorBtns[10].addEventListener('click', () => {
+      done();
+    });
+
+    function done() {
+      console.log('We are done testing');
+    }
+
+    window.addEventListener('error', () => {
+      console.log('Global error found')
+    });
+
   </script>
 </body>
 </html>
